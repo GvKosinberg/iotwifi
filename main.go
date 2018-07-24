@@ -131,6 +131,29 @@ func main() {
 		w.Write(ret)
 	}
 
+	// @Kocuo: Disconnect handler
+	disconncetHandler := func(w http.ResponseWriter, r *http.Request) {
+		blog.Info("Got disconnect")
+		dcStatus, err := wpacfg.Disconnect()
+		if err != nil {
+			retError(w, err)
+			return
+		}
+
+		apiReturn := &ApiReturn{
+			Status:  "OK",
+			Message: "Disconnect service.",
+		}
+		ret, err := json.Marshal(apiReturn)
+		if err != nil {
+			retError(w, err)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(ret)
+	}
+
 	// scan for wifi networks
 	scanHandler := func(w http.ResponseWriter, r *http.Request) {
 		blog.Info("Got Scan")
@@ -194,6 +217,7 @@ func main() {
 	// set app routes
 	r.HandleFunc("/status", statusHandler)
 	r.HandleFunc("/connect", connectHandler).Methods("POST")
+	r.HandleFunc("/disconnect", disconnectHandler)
 	r.HandleFunc("/scan", scanHandler)
 	r.HandleFunc("/kill", killHandler)
 	http.Handle("/", r)

@@ -139,6 +139,9 @@ func (wpa *WpaCfg) ConfiguredNetworks() string {
 func (wpa *WpaCfg) ConnectNetwork(creds WpaCredentials) (WpaConnection, error) {
 	connection := WpaConnection{}
 
+	// 0. disconnect and remove all other networks
+	// TODO: disconnect
+
 	// 1. Add a network
 	addNetOut, err := exec.Command("wpa_cli", "-i", "wlan0", "add_network").Output()
 	if err != nil {
@@ -293,4 +296,30 @@ func (wpa *WpaCfg) ScanNetworks() (map[string]WpaNetwork, error) {
 	}
 
 	return wpaNetworks, nil
+}
+
+// @Kocuo: get all networks and delete them.
+func (wpa *WpaCfg) Disconnect() (string, error) {
+
+	// Get list of existing netwoks
+	networkList, err := exec.Command("wpa_cli", "-i", "wlan0", "list_networks").Output()
+	if err != nil {
+		wpa.Log.Fatal(err)
+		return nil, err
+	}
+
+	networkListOutArr := strings.Split(string(in_str), "\n")
+	for _, netRecord := range networkListOutArr {
+		fields := strings.Fields(netRecord)
+		if len(fields) > 0 {
+			networkId := fields[0]
+			networkList, err := exec.Command("wpa_cli", "-i", "wlan0", "remove_network", networkId).Output()
+			if err != nil {
+				wpa.Log.Fatal(err)
+				return nil, err
+			}
+		}
+	}
+
+	return "OK", nil
 }
