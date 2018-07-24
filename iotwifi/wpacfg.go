@@ -309,7 +309,6 @@ func (wpa *WpaCfg) Disconnect() (string, error) {
 
 	// Split strings by separator \n
 	networkListOutArr := strings.Split(string(networkList), "\n")
-	removeStatus := "OK"
 	// For each network in list
 	for _, netRecord := range networkListOutArr {
 		// divide string to list
@@ -318,12 +317,11 @@ func (wpa *WpaCfg) Disconnect() (string, error) {
 			// get id
 			networkId := fields[0]
 			removeStatus, err := exec.Command("wpa_cli", "-i", "wlan0", "remove_network", networkId).Output()
-			if err != nil {
+			if (err != nil) && (removeStatus != "FAIL") {
 				wpa.Log.Fatal(err)
 				return "NEOK", err
 			}
 		}
 	}
-
-	return string(removeStatus), nil
+	return "OK", nil
 }
