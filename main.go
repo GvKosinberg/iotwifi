@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/bhoriuchi/go-bunyan/bunyan"
-	"github.com/cjimti/iotwifi/iotwifi"
+	"github.com/GvKosinberg/iotwifi/iotwifi"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )

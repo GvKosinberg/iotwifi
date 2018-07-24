@@ -3,10 +3,10 @@ FROM arm32v6/golang:1.10.1-alpine3.7 AS builder
 ENV GOPATH /go
 WORKDIR /go/src
 
-RUN mkdir -p /go/src/github.com/cjimti/iotwifi
-COPY . /go/src/github.com/cjimti/iotwifi
+RUN mkdir -p /go/src/github.com/GvKosinberg/iotwifi
+COPY . /go/src/github.com/GvKosinberg/iotwifi
 
-RUN CGO_ENABLED=0 go build -a -installsuffix cgo -o /go/bin/wifi /go/src/github.com/cjimti/iotwifi/main.go
+RUN CGO_ENABLED=0 go build -a -installsuffix cgo -o /go/bin/wifi /go/src/github.com/GvKosinberg/iotwifi/main.go
 
 FROM arm32v6/alpine
 
@@ -20,5 +20,3 @@ WORKDIR /
 
 COPY --from=builder /go/bin/wifi /wifi
 ENTRYPOINT ["/wifi"]
-
-
