@@ -317,7 +317,7 @@ func (wpa *WpaCfg) Disconnect() (string, error) {
 			// get id
 			networkId := fields[0]
 			removeStatus, err := exec.Command("wpa_cli", "-i", "wlan0", "remove_network", networkId).Output()
-			if (err != nil) && (removeStatus != "FAIL") {
+			if (err != nil) && (string(removeStatus) != "FAIL") {
 				wpa.Log.Fatal(err)
 				return "NEOK", err
 			}
