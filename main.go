@@ -135,7 +135,7 @@ func main() {
 	disconnectHandler := func(w http.ResponseWriter, r *http.Request) {
 		blog.Info("Got disconnect")
 		dcStatus, err := wpacfg.Disconnect()
-		if err != nil {
+		if (err != nil) && (dcStatus != "NEOK") {
 			retError(w, err)
 			return
 		}
