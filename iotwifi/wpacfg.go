@@ -300,7 +300,6 @@ func (wpa *WpaCfg) ScanNetworks() (map[string]WpaNetwork, error) {
 
 // @Kocuo: get all networks and delete them.
 func (wpa *WpaCfg) Disconnect() (string, error) {
-
 	// Get list of existing netwoks
 	networkList, err := exec.Command("wpa_cli", "-i", "wlan0", "list_networks").Output()
 	if err != nil {
@@ -308,10 +307,15 @@ func (wpa *WpaCfg) Disconnect() (string, error) {
 		return "NEOK", err
 	}
 
+	// Split strings by separator \n
 	networkListOutArr := strings.Split(string(networkList), "\n")
+	removeStatus := "OK"
+	// For each network in list
 	for _, netRecord := range networkListOutArr {
+		// divide string to list
 		fields := strings.Fields(netRecord)
 		if len(fields) > 0 {
+			// get id
 			networkId := fields[0]
 			removeStatus, err := exec.Command("wpa_cli", "-i", "wlan0", "remove_network", networkId).Output()
 			if err != nil {
