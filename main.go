@@ -132,7 +132,7 @@ func main() {
 	}
 
 	// @Kocuo: Disconnect handler
-	disconncetHandler := func(w http.ResponseWriter, r *http.Request) {
+	disconnectHandler := func(w http.ResponseWriter, r *http.Request) {
 		blog.Info("Got disconnect")
 		dcStatus, err := wpacfg.Disconnect()
 		if err != nil {
