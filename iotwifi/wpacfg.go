@@ -305,7 +305,7 @@ func (wpa *WpaCfg) Disconnect() (string, error) {
 	networkList, err := exec.Command("wpa_cli", "-i", "wlan0", "list_networks").Output()
 	if err != nil {
 		wpa.Log.Fatal(err)
-		return nil, err
+		return "NEOK", err
 	}
 
 	networkListOutArr := strings.Split(string(in_str), "\n")
@@ -316,7 +316,7 @@ func (wpa *WpaCfg) Disconnect() (string, error) {
 			networkList, err := exec.Command("wpa_cli", "-i", "wlan0", "remove_network", networkId).Output()
 			if err != nil {
 				wpa.Log.Fatal(err)
-				return nil, err
+				return "NEOK", err
 			}
 		}
 	}
