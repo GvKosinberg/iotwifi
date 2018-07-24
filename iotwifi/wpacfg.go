@@ -308,7 +308,7 @@ func (wpa *WpaCfg) Disconnect() (string, error) {
 		return "NEOK", err
 	}
 
-	networkListOutArr := strings.Split(string(in_str), "\n")
+	networkListOutArr := strings.Split(string(networkList), "\n")
 	for _, netRecord := range networkListOutArr {
 		fields := strings.Fields(netRecord)
 		if len(fields) > 0 {
