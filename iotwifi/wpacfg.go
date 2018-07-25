@@ -298,7 +298,7 @@ func (wpa *WpaCfg) Disconnect() (string, error) {
 // ScanNetworks returns a map of WpaNetwork data structures.
 func (wpa *WpaCfg) ScanNetworks() (map[string]WpaNetwork, error) {
 	wpaNetworks := make(map[string]WpaNetwork, 0)
-	Disconnect()
+	WpaCfg.Disconnect()
 
 	scanOut, err := exec.Command("wpa_cli", "-i", "wlan0", "scan").Output()
 	if err != nil {
