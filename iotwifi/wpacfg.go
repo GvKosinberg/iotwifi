@@ -332,6 +332,7 @@ func (wpa *WpaCfg) Disconnect() (string, error) {
 	// Reassociate interface
 	rsStatus, err := exec.Command("wpa_cli", "-i", "wlan0", "reassociate").Output()
 	if err != nil {
+		wpa.Log.Info(rsStatus)
 		wpa.Log.Fatal(err)
 		return "FAIL during reassociate", err
 	}
