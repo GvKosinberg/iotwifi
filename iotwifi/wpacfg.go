@@ -141,6 +141,7 @@ func (wpa *WpaCfg) ConnectNetwork(creds WpaCredentials) (WpaConnection, error) {
 
 	// 0. disconnect and remove all other networks
 	// TODO: disconnect
+	wpa.Disconnect()
 
 	// 1. Add a network
 	addNetOut, err := exec.Command("wpa_cli", "-i", "wlan0", "add_network").Output()
@@ -298,7 +299,6 @@ func (wpa *WpaCfg) Disconnect() (string, error) {
 // ScanNetworks returns a map of WpaNetwork data structures.
 func (wpa *WpaCfg) ScanNetworks() (map[string]WpaNetwork, error) {
 	wpaNetworks := make(map[string]WpaNetwork, 0)
-	WpaCfg.Disconnect()
 
 	scanOut, err := exec.Command("wpa_cli", "-i", "wlan0", "scan").Output()
 	if err != nil {
