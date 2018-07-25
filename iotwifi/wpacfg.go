@@ -100,7 +100,11 @@ wpa=2
 wpa_passphrase=` + wpa.WpaCfg.HostApdCfg.WpaPassphrase + `
 wpa_key_mgmt=WPA-PSK
 wpa_pairwise=TKIP
-rsn_pairwise=CCMP`
+rsn_pairwise=CCMP
+country_code=RU
+ieee80211d=1
+ieee80211n=1
+`
 
 	wpa.Log.Info("Hostapd CFG: %s", cfg)
 	hostapdPipe.Write([]byte(cfg))
