@@ -300,11 +300,17 @@ func (wpa *WpaCfg) ScanNetworks() (map[string]WpaNetwork, error) {
 
 // @Kocuo: get all networks and delete them.
 func (wpa *WpaCfg) Disconnect() (string, error) {
+	// Disconnect interface before removal
+	dcStatus, err := exec.Command("wpa_cli", "-i", "wlan0", "disconnect").Output()
+	if (string(dcStatus) != "OK") || (err != nil) {
+		wpa.Log.Fatal(err)
+		return "FAIL during dc", err
+	}
 	// Get list of existing netwoks
 	networkList, err := exec.Command("wpa_cli", "-i", "wlan0", "list_networks").Output()
 	if err != nil {
 		wpa.Log.Fatal(err)
-		return "NEOK", err
+		return "FAIL during nwList receive", err
 	}
 
 	// Split strings by separator \n
@@ -319,9 +325,16 @@ func (wpa *WpaCfg) Disconnect() (string, error) {
 			removeStatus, err := exec.Command("wpa_cli", "-i", "wlan0", "remove_network", networkId).Output()
 			if (err != nil) && (string(removeStatus) != "FAIL") {
 				wpa.Log.Fatal(err)
-				return "NEOK", err
+				return "FAIL during nwRemoval", err
 			}
 		}
 	}
-	return "OK", nil
+	// Reassociate interface
+	rsStatus, err := exec.Command("wpa_cli", "-i", "wlan0", "reassociate").Output()
+	if err != nil {
+		wpa.Log.Fatal(err)
+		return "FAIL during reassociate", err
+	}
+
+	return string(rsStatus), nil
 }

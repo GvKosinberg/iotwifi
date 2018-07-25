@@ -131,17 +131,17 @@ func main() {
 		w.Write(ret)
 	}
 
-	// @Kocuo: Disconnect handler
+	// @GvKosinberg: Disconnect handler
 	disconnectHandler := func(w http.ResponseWriter, r *http.Request) {
 		blog.Info("Got disconnect")
 		dcStatus, err := wpacfg.Disconnect()
-		if (err != nil) && (dcStatus != "NEOK") {
+		if (err != nil) {
 			retError(w, err)
 			return
 		}
 
 		apiReturn := &ApiReturn{
-			Status:  "OK",
+			Status:  dcStatus,
 			Message: "Disconnect service.",
 		}
 		ret, err := json.Marshal(apiReturn)
