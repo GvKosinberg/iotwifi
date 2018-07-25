@@ -302,7 +302,8 @@ func (wpa *WpaCfg) ScanNetworks() (map[string]WpaNetwork, error) {
 func (wpa *WpaCfg) Disconnect() (string, error) {
 	// Disconnect interface before removal
 	dcStatus, err := exec.Command("wpa_cli", "-i", "wlan0", "disconnect").Output()
-	if (string(dcStatus) != "OK") || (err != nil) {
+	if (err != nil) {
+		wpa.Log.Fatal(dcStatus)
 		wpa.Log.Fatal(err)
 		return "FAIL during dc", err
 	}
