@@ -282,7 +282,7 @@ func (wpa *WpaCfg) Disconnect() (string, error) {
 		if len(fields) > 0 {
 			// get id
 			networkId := fields[0]
-			removeStatus, err := exec.Command("wpa_cli", "-i", "wlan0", "remove_network", networkId).Output()
+			removeStatus, err := exec.Command("wpa_cli", "-i", "wlan0", "disable_network", networkId).Output()
 			if (err != nil) && (string(removeStatus) != "FAIL") {
 				wpa.Log.Fatal(err)
 				return "FAIL during nwRemoval", err
