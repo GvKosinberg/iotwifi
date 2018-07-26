@@ -1,7 +1,6 @@
 FROM arm32v6/golang:1.10.1-alpine3.7 AS builder
 
 ENV GOPATH /go
-ENV IOTWIFI_PORT 8000
 WORKDIR /go/src
 
 RUN mkdir -p /go/src/github.com/GvKosinberg/iotwifi
