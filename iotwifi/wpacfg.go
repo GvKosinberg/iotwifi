@@ -202,7 +202,7 @@ func (wpa *WpaCfg) ConnectNetwork(creds WpaCredentials) (WpaConnection, error) {
 			wpa.Log.Info("WPA Enable state: %s", state)
 			// see https://developer.android.com/reference/android/net/wifi/SupplicantState.html
 			if state == "COMPLETED" {
-				save the config
+				// save the config
 				saveOut, err := exec.Command("wpa_cli", "-i", "wlan0", "save_config").Output()
 				if err != nil {
 					wpa.Log.Fatal(err.Error())
