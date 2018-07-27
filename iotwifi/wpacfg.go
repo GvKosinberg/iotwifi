@@ -203,13 +203,13 @@ func (wpa *WpaCfg) ConnectNetwork(creds WpaCredentials) (WpaConnection, error) {
 			// see https://developer.android.com/reference/android/net/wifi/SupplicantState.html
 			if state == "COMPLETED" {
 				// save the config
-				saveOut, err := exec.Command("wpa_cli", "-i", "wlan0", "save_config").Output()
-				if err != nil {
-					wpa.Log.Fatal(err.Error())
-					return connection, err
-				}
-				saveStatus := strings.TrimSpace(string(saveOut))
-				wpa.Log.Info("WPA save got: %s", saveStatus)
+				// saveOut, err := exec.Command("wpa_cli", "-i", "wlan0", "save_config").Output()
+				// if err != nil {
+				// 	wpa.Log.Fatal(err.Error())
+				// 	return connection, err
+				// }
+				// saveStatus := strings.TrimSpace(string(saveOut))
+				// wpa.Log.Info("WPA save got: %s", saveStatus)
 
 				connection.Ssid = creds.Ssid
 				connection.State = state
@@ -282,7 +282,7 @@ func (wpa *WpaCfg) Disconnect() (string, error) {
 		if len(fields) > 0 {
 			// get id
 			networkId := fields[0]
-			removeStatus, err := exec.Command("wpa_cli", "-i", "wlan0", "disable_network", networkId).Output()
+			removeStatus, err := exec.Command("wpa_cli", "-i", "wlan0", "remove_network", networkId).Output()
 			if (err != nil) && (string(removeStatus) != "FAIL") {
 				wpa.Log.Fatal(err)
 				return "FAIL during nwRemoval", err
