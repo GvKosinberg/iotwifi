@@ -15,36 +15,36 @@ type Command struct {
 
 // RemoveApInterface removes the AP interface.
 func (c *Command) RemoveApInterface() {
-	cmd := exec.Command("iw", "dev", "uap0", "del")
+	cmd := exec.Command("iw", "dev", "wlan1", "del")
 	cmd.Start()
 	cmd.Wait()
 }
 
 // ConfigureApInterface configured the AP interface.
 func (c *Command) ConfigureApInterface() {
-	cmd := exec.Command("ifconfig", "uap0", c.SetupCfg.HostApdCfg.Ip)
+	cmd := exec.Command("ifconfig", "wlan1", c.SetupCfg.HostApdCfg.Ip)
 	cmd.Start()
 	cmd.Wait()
 }
 
 // UpApInterface ups the AP Interface.
 func (c *Command) UpApInterface() {
-	cmd := exec.Command("ifconfig", "uap0", "up")
+	cmd := exec.Command("ifconfig", "wlan1", "up")
 	cmd.Start()
 	cmd.Wait()
 }
 
 // AddApInterface adds the AP interface.
 func (c *Command) AddApInterface() {
-	cmd := exec.Command("iw", "phy", "phy0", "interface", "add", "uap0", "type", "__ap")
+	cmd := exec.Command("iw", "phy", "phy1", "interface", "add", "wlan1", "type", "__ap")
 	cmd.Start()
 	cmd.Wait()
 }
 
 // CheckInterface checks the AP interface.
 func (c *Command) CheckApInterface() {
-	cmd := exec.Command("ifconfig", "uap0")
-	go c.Runner.ProcessCmd("ifconfig_uap0", cmd)
+	cmd := exec.Command("ifconfig", "wlan1")
+	go c.Runner.ProcessCmd("ifconfig_wlan1", cmd)
 }
 
 // StartWpaSupplicant starts wpa_supplicant.
@@ -53,7 +53,7 @@ func (c *Command) StartWpaSupplicant() {
 	args := []string{
 		"-d",
 		"-Dnl80211",
-		"-iwlan0",
+		"-iwlan1",
 		"-c/etc/wpa_supplicant/wpa_supplicant.conf",
 	}
 

@@ -89,7 +89,7 @@ func (wpa *WpaCfg) StartAP() {
 		}
 	}()
 
-	cfg := `interface=uap0
+	cfg := `interface=wlan1
 ssid=` + wpa.WpaCfg.HostApdCfg.Ssid + `
 hw_mode=g
 channel=` + wpa.WpaCfg.HostApdCfg.Channel + `
@@ -114,15 +114,11 @@ ieee80211n=1
 
 	for {
 		out := <-messages // Block until we receive a message on the channel
-		if strings.Contains(out, "uap0: AP-DISABLED") {
+		if strings.Contains(out, "wlan1: AP-DISABLED") {
 			wpa.Log.Info("Hostapd DISABLED")
-			//cmd.Process.Kill()
-			//cmd.Wait()
-
 			return
-
 		}
-		if strings.Contains(out, "uap0: AP-ENABLED") {
+		if strings.Contains(out, "wlan1: AP-ENABLED") {
 			wpa.Log.Info("Hostapd ENABLED")
 			return
 		}
@@ -135,7 +131,6 @@ func (wpa *WpaCfg) ConfiguredNetworks() string {
 	if err != nil {
 		wpa.Log.Fatal(err)
 	}
-
 	return string(netOut)
 }
 
@@ -257,7 +252,7 @@ func cfgMapper(data []byte) map[string]string {
 	return cfgMap
 }
 
-// @Kocuo: get all networks and delete them.
+// @GvKosinberg: get all networks and delete them.
 func (wpa *WpaCfg) Disconnect() (string, error) {
 	// Disconnect interface before removal
 	dcStatus, err := exec.Command("wpa_cli", "-i", "wlan0", "disconnect").Output()
