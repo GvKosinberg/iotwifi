@@ -53,7 +53,7 @@ func (c *Command) StartWpaSupplicant() {
 	args := []string{
 		"-d",
 		"-Dnl80211",
-		"-iwlan1",
+		"-iwlan0",
 		"-c/etc/wpa_supplicant/wpa_supplicant.conf",
 	}
 
