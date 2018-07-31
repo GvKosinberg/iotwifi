@@ -51,7 +51,6 @@ func (c *Command) CheckApInterface() {
 func (c *Command) StartWpaSupplicant() {
 
 	args := []string{
-		"-d",
 		"-Dnl80211",
 		"-iwlan0",
 		"-c/etc/wpa_supplicant/wpa_supplicant.conf",
@@ -66,6 +65,7 @@ func (c *Command) StartDnsmasq() {
 	// hostapd is enabled, fire up dnsmasq
 	args := []string{
 		"--no-hosts", // Don't read the hostnames in /etc/hosts.
+		"--interface=wlan1",
 		"--keep-in-foreground",
 		"--log-queries",
 		"--no-resolv",
@@ -74,6 +74,7 @@ func (c *Command) StartDnsmasq() {
 		"--dhcp-vendorclass=" + c.SetupCfg.DnsmasqCfg.VendorClass,
 		"--dhcp-authoritative",
 		"--log-facility=-",
+		"--log-dhcp",
 	}
 
 	cmd := exec.Command("dnsmasq", args...)
