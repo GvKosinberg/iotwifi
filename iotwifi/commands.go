@@ -29,6 +29,10 @@ func (c *Command) ConfigureApInterface() {
 
 // UpApInterface ups the AP Interface.
 func (c *Command) UpApInterface() {
+	preup := exec.Command("iptables-restore", "/etc/iptables.ipv4.nat")
+	preup.Start()
+	preup.Wait()
+
 	cmd := exec.Command("ifconfig", "wlan1", "up")
 	cmd.Start()
 	cmd.Wait()
@@ -80,34 +84,34 @@ func (c *Command) StartDnsmasq() {
 	cmd := exec.Command("dnsmasq", args...)
 	go c.Runner.ProcessCmd("dnsmasq", cmd)
 }
-
-// Add bridge (br0)
-// BrideAPtoEth bridges the connection from eth0 to uap0
-func (c *Command) BridgeAPtoEth() {
-    cmd_sed := exec.Command("sed", "-i", "s/#?net.ipv4.ip_forward.*/net.ipv4.ip_forward = 1/", "/etc/sysctl.conf")
-    cmd_sed.Run()
-    cmd_sysctl := exec.Command("sysctl", "-p")
-    cmd_sysctl.Run()
-    iptables1_args := []string{
-        "-t",
-        "nat",
-        "-A",
-        "POSTROUTING",
-        "--out-interface",
-        "wlan1",
-        "-j",
-        "MASQUERADE",
-    }
-    cmd_iptables1 := exec.Command("iptables", iptables1_args...)
-    cmd_iptables1.Run()
-    iptables2_args := []string{
-        "-A",
-        "FORWARD",
-        "--in-interface",
-        "eth0",
-        "-j",
-        "ACCEPT",
-    }
-    cmd_iptables2 := exec.Command("iptables", iptables2_args...)
-    cmd_iptables2.Run()
-}
+//
+// // Add bridge (br0)
+// // BrideAPtoEth bridges the connection from eth0 to uap0
+// func (c *Command) BridgeAPtoEth() {
+//     cmd_sed := exec.Command("sed", "-i", "s/#?net.ipv4.ip_forward.*/net.ipv4.ip_forward = 1/", "/etc/sysctl.conf")
+//     cmd_sed.Run()
+//     cmd_sysctl := exec.Command("sysctl", "-p")
+//     cmd_sysctl.Run()
+//     iptables1_args := []string{
+//         "-t",
+//         "nat",
+//         "-A",
+//         "POSTROUTING",
+//         "--out-interface",
+//         "wlan1",
+//         "-j",
+//         "MASQUERADE",
+//     }
+//     cmd_iptables1 := exec.Command("iptables", iptables1_args...)
+//     cmd_iptables1.Run()
+//     iptables2_args := []string{
+//         "-A",
+//         "FORWARD",
+//         "--in-interface",
+//         "eth0",
+//         "-j",
+//         "ACCEPT",
+//     }
+//     cmd_iptables2 := exec.Command("iptables", iptables2_args...)
+//     cmd_iptables2.Run()
+// }

@@ -108,10 +108,10 @@ func RunWifi(log bunyan.Logger, messages chan CmdMessage, cfgLocation string) {
 	wpacfg := NewWpaCfg(log, cfgLocation)
 	wpacfg.StartAP()
 
-	time.Sleep(5 * time.Second)
-	command.BridgeAPtoEth()
+	// time.Sleep(5 * time.Second)
+	// command.BridgeAPtoEth()
 
-	time.Sleep(5 * time.Second)
+	time.Sleep(10 * time.Second)
 	command.StartWpaSupplicant()
 
 	// Scan
