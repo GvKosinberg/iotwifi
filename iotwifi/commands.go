@@ -95,7 +95,7 @@ func (c *Command) BridgeAPtoEth() {
         "-A",
         "POSTROUTING",
         "--out-interface",
-        "uap0",
+        "wlan1",
         "-j",
         "MASQUERADE",
     }
