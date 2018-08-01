@@ -88,8 +88,8 @@ func (c *Command) BridgeAPtoEth() {
 	cmd_sed := exec.Command("sed", "-i", "s/#?net.ipv4.ip_forward.*/net.ipv4.ip_forward = 1/", "/etc/sysctl.conf")
 	cmd_sed.Run()
 	cmd_sysctl := exec.Command("sysctl", "-p")
-
 	cmd_sysctl.Run()
+
 	iptables0_args := []string{
         "-t",
         "nat",
@@ -103,7 +103,7 @@ func (c *Command) BridgeAPtoEth() {
 	cmd_iptables0 := exec.Command("iptables", iptables0_args...)
   cmd_iptables0.Run()
 
-  iptables2_args := []string{
+  iptables1_args := []string{
 	      "-A",
 	      "FORWARD",
 	      "-i",
@@ -115,10 +115,10 @@ func (c *Command) BridgeAPtoEth() {
 				"--state",
 				"RELATED, ESTABLISHED",
 	      "-j",
-	      "ACCEPT"
+	      "ACCEPT",
   }
-	cmd_iptables2 := exec.Command("iptables", iptables2_args...)
-  cmd_iptables2.Run()
+	cmd_iptables1 := exec.Command("iptables", iptables1_args...)
+  cmd_iptables1.Run()
 
 	iptables2_args := []string{
 				"-A",
@@ -128,7 +128,7 @@ func (c *Command) BridgeAPtoEth() {
 				"-o",
 				"eth0",
 				"-j",
-				"ACCEPT"
+				"ACCEPT",
 	}
 	cmd_iptables2 := exec.Command("iptables", iptables2_args...)
 	cmd_iptables2.Run()
