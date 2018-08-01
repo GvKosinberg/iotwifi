@@ -81,34 +81,55 @@ func (c *Command) StartDnsmasq() {
 	go c.Runner.ProcessCmd("dnsmasq", cmd)
 }
 
-// Add bridge (br0,fd,f,ll)
+// Add bridge (br0)
 // BrideAPtoEth bridges the connection from eth0 to uap0
 func (c *Command) BridgeAPtoEth() {
 
 	cmd_sed := exec.Command("sed", "-i", "s/#?net.ipv4.ip_forward.*/net.ipv4.ip_forward = 1/", "/etc/sysctl.conf")
 	cmd_sed.Run()
 	cmd_sysctl := exec.Command("sysctl", "-p")
+
 	cmd_sysctl.Run()
-	iptables1_args := []string{
+	iptables0_args := []string{
         "-t",
         "nat",
         "-A",
         "POSTROUTING",
-        "--out-interface",
-        "wlan1",
+        "-o",
+        "eth0",
         "-j",
         "MASQUERADE",
     }
-		cmd_iptables1 := exec.Command("iptables", iptables1_args...)
-    cmd_iptables1.Run()
-    iptables2_args := []string{
-        "-A",
-        "FORWARD",
-        "--in-interface",
-        "eth0",
-        "-j",
-        "ACCEPT"
-    }
-		cmd_iptables2 := exec.Command("iptables", iptables2_args...)
-    cmd_iptables2.Run()
+	cmd_iptables0 := exec.Command("iptables", iptables0_args...)
+  cmd_iptables0.Run()
+
+  iptables2_args := []string{
+	      "-A",
+	      "FORWARD",
+	      "-i",
+	      "eth0",
+				"-o",
+				"wlan1",
+				"-m",
+				"state",
+				"--state",
+				"RELATED, ESTABLISHED",
+	      "-j",
+	      "ACCEPT"
+  }
+	cmd_iptables2 := exec.Command("iptables", iptables2_args...)
+  cmd_iptables2.Run()
+
+	iptables2_args := []string{
+				"-A",
+				"FORWARD",
+				"-i",
+				"wlan1",
+				"-o",
+				"eth0",
+				"-j",
+				"ACCEPT"
+	}
+	cmd_iptables2 := exec.Command("iptables", iptables2_args...)
+	cmd_iptables2.Run()
 }
