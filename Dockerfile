@@ -16,6 +16,9 @@ RUN apk add bridge hostapd wireless-tools wpa_supplicant dnsmasq iw
 RUN mkdir -p /etc/wpa_supplicant/
 COPY ./dev/configs/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf
 
+RUN mkdir -p /etc/
+COPY ./cfg/iptables.ipv4.nat /etc/iptables.ipv4.nat
+
 WORKDIR /
 
 COPY --from=builder /go/bin/wifi /wifi
