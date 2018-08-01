@@ -212,7 +212,7 @@ func (wpa *WpaCfg) ConnectNetwork(creds WpaCredentials) (WpaConnection, error) {
 
 				connection.Ssid = creds.Ssid
 				connection.State = state
-				connection.IP = ip
+				connection.Ip = ip
 
 				return connection, nil
 			}
