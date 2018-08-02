@@ -203,8 +203,13 @@ func (wpa *WpaCfg) ConnectNetwork(creds WpaCredentials) (WpaConnection, error) {
 				// save the config
 				ip := ""
 				for i := 0; i < 20; i++ {
-					mss := rIp.FindSubmatch(stateOut)
-					wpa.Log.Info("WPA status: %s", string(stateOut))
+					stIpOut, err := exec.Command("wpa_cli", "-i", "wlan0", "status").Output()
+					if err != nil {
+						wpa.Log.Fatal("Got error checking ip state: %s", err.Error())
+						return connection, err
+					}
+					mss := rIp.FindSubmatch(stIpOut)
+					wpa.Log.Info("WPA status: %s", string(stIpOut))
 					if len(mss) > 0 {
 						ip = string(mss[1])
 						wpa.Log.Info("WPA got ip: %s", ip)
