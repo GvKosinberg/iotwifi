@@ -77,10 +77,6 @@ func (c *Command) StartDnsmasq() {
 		"--log-dhcp",
 	}
 
-	cmd, err := exec.Command("dnsmasq", args...)
-	if err != nil {
-		wpa.Log.Fatal(err)
-		return
-	}
+	cmd := exec.Command("dnsmasq", args...)
 	go c.Runner.ProcessCmd("dnsmasq", cmd)
 }

@@ -90,6 +90,7 @@ func (wpa *WpaCfg) StartAP() {
 	}()
 
 	cfg := `interface=wlan1
+driver=nl80211
 ssid=` + wpa.WpaCfg.HostApdCfg.Ssid + `
 hw_mode=g
 channel=` + wpa.WpaCfg.HostApdCfg.Channel + `
