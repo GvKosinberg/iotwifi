@@ -202,7 +202,7 @@ func (wpa *WpaCfg) ConnectNetwork(creds WpaCredentials) (WpaConnection, error) {
 			if state == "COMPLETED" {
 				// save the config
 				ip := ""
-				for i := 0; i < 10; i++ {
+				for i := 0; i < 20; i++ {
 					mss := rIp.FindSubmatch(stateOut)
 					wpa.Log.Info("WPA status: %s", string(stateOut))
 					if len(mss) > 0 {
