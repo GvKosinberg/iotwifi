@@ -204,6 +204,7 @@ func (wpa *WpaCfg) ConnectNetwork(creds WpaCredentials) (WpaConnection, error) {
 				ip := ""
 				for i := 0; i < 5; i++ {
 					mss := rIp.FindSubmatch(stateOut)
+					wpa.Log.Info("WPA status: %s", string(stateOut))
 					if len(mss) > 0 {
 						ip = string(mss[1])
 						wpa.Log.Info("WPA got ip: %s", ip)
