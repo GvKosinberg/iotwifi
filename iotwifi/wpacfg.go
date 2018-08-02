@@ -205,7 +205,7 @@ func (wpa *WpaCfg) ConnectNetwork(creds WpaCredentials) (WpaConnection, error) {
 				for i := 0; i < 5; i++ {
 					mss := rIp.FindSubmatch(stateOut)
 					if len(mss) > 0 {
-						ip = string([1])
+						ip = string(mss[1])
 						continue
 					}
 					time.Sleep(1 * time.Second)
