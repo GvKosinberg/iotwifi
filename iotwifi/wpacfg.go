@@ -200,9 +200,9 @@ func (wpa *WpaCfg) ConnectNetwork(creds WpaCredentials) (WpaConnection, error) {
 			wpa.Log.Info("WPA Enable state: %s", state)
 			// see https://developer.android.com/reference/android/net/wifi/SupplicantState.html
 			if state == "COMPLETED" {
-				// save the config
+				// get ip
 				ip := ""
-				for i := 0; i < 20; i++ {
+				for i := 0; i < 10; i++ {
 					stIpOut, err := exec.Command("wpa_cli", "-i", "wlan0", "status").Output()
 					if err != nil {
 						wpa.Log.Fatal("Got error checking ip state: %s", err.Error())
@@ -213,10 +213,11 @@ func (wpa *WpaCfg) ConnectNetwork(creds WpaCredentials) (WpaConnection, error) {
 					if len(mss) > 0 {
 						ip = string(mss[1])
 						wpa.Log.Info("WPA got ip: %s", ip)
-						continue
+						break
 					}
 					time.Sleep(1 * time.Second)
 				}
+				// save the config
 				saveOut, err := exec.Command("wpa_cli", "-i", "wlan0", "save_config").Output()
 				if err != nil {
 					wpa.Log.Fatal(err.Error())
