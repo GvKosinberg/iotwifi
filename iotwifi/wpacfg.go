@@ -87,7 +87,7 @@ func (wpa *WpaCfg) StartAP() {
 		"ctrl_interface=/var/run/hostapd",
 }
 
-	cmd := exec.Command("hostapd", "-d", cfg)
+	cmd := exec.Command("hostapd", "-d", cfg...)
 
 	// pipes
 	// hostapdPipe, _ := cmd.StdinPipe()
