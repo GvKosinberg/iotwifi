@@ -70,23 +70,23 @@ func (wpa *WpaCfg) StartAP() {
 	command.UpApInterface()
 	command.ConfigureApInterface()
 
-	cfg := `interface=wlan1
-driver=nl80211
-ssid=` + wpa.WpaCfg.HostApdCfg.Ssid + `
-hw_mode=g
-channel=` + wpa.WpaCfg.HostApdCfg.Channel + `
-macaddr_acl=0
-auth_algs=1
-ignore_broadcast_ssid=0
-wpa=2
-wpa_passphrase=` + wpa.WpaCfg.HostApdCfg.WpaPassphrase + `
-wpa_key_mgmt=WPA-PSK
-wpa_pairwise=TKIP
-rsn_pairwise=CCMP
-ctrl_interface=/var/run/hostapd
-`
+// 	cfg := `interface=wlan1
+// driver=nl80211
+// ssid=` + wpa.WpaCfg.HostApdCfg.Ssid + `
+// hw_mode=g
+// channel=` + wpa.WpaCfg.HostApdCfg.Channel + `
+// macaddr_acl=0
+// auth_algs=1
+// ignore_broadcast_ssid=0
+// wpa=2
+// wpa_passphrase=` + wpa.WpaCfg.HostApdCfg.WpaPassphrase + `
+// wpa_key_mgmt=WPA-PSK
+// wpa_pairwise=TKIP
+// rsn_pairwise=CCMP
+// ctrl_interface=/var/run/hostapd
+// `
 
-	cmd := exec.Command("hostapd", "-d", ...cfg)
+	cmd := exec.Command("hostapd", "-d", /etc/hostapd/hostapd.conf)
 
 	// pipes
 	// hostapdPipe, _ := cmd.StdinPipe()
@@ -105,7 +105,7 @@ ctrl_interface=/var/run/hostapd
 		}
 	}()
 
-	wpa.Log.Info("Hostapd CFG: %s", cfg)
+	// wpa.Log.Info("Hostapd CFG: %s", cfg)
 	// hostapdPipe.Write([]byte(cfg))
 
 	cmd.Start()
