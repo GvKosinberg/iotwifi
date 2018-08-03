@@ -74,7 +74,7 @@ func (wpa *WpaCfg) StartAP() {
 	cmd := exec.Command("hostapd", "-d", "/dev/stdin")
 
 	// pipes
-	// hostapdPipe, _ := cmd.StdinPipe()
+	hostapdPipe, _ := cmd.StdinPipe()
 	cmdStdoutReader, err := cmd.StdoutPipe()
 	if err != nil {
 		panic(err)
