@@ -70,10 +70,28 @@ func (wpa *WpaCfg) StartAP() {
 	command.UpApInterface()
 	command.ConfigureApInterface()
 
+
+		cfg := `interface=wlan1
+	driver=nl80211
+	ssid=` + wpa.WpaCfg.HostApdCfg.Ssid + `
+	hw_mode=g
+	channel=` + wpa.WpaCfg.HostApdCfg.Channel + `
+	macaddr_acl=0
+	auth_algs=1
+	ignore_broadcast_ssid=0
+	wpa=2
+	wpa_passphrase=` + wpa.WpaCfg.HostApdCfg.WpaPassphrase + `
+	wpa_key_mgmt=WPA-PSK
+	wpa_pairwise=TKIP
+	rsn_pairwise=CCMP
+	ctrl_interface=/var/run/hostapd
+	`
+
+
 	cmd := exec.Command("hostapd", "-d", "/dev/stdin")
 
 	// pipes
-	hostapdPipe, _ := cmd.StdinPipe()
+	// hostapdPipe, _ := cmd.StdinPipe()
 	cmdStdoutReader, err := cmd.StdoutPipe()
 	if err != nil {
 		panic(err)
@@ -89,29 +107,11 @@ func (wpa *WpaCfg) StartAP() {
 		}
 	}()
 
-	cfg := `interface=wlan1
-driver=nl80211
-ssid=` + wpa.WpaCfg.HostApdCfg.Ssid + `
-hw_mode=g
-channel=` + wpa.WpaCfg.HostApdCfg.Channel + `
-macaddr_acl=0
-auth_algs=3
-ignore_broadcast_ssid=0
-wpa=2
-wpa_passphrase=` + wpa.WpaCfg.HostApdCfg.WpaPassphrase + `
-wpa_key_mgmt=WPA-PSK
-wpa_pairwise=TKIP
-rsn_pairwise=CCMP
-country_code=RU
-ieee80211d=1
-ieee80211n=1
-`
-
 	wpa.Log.Info("Hostapd CFG: %s", cfg)
-	hostapdPipe.Write([]byte(cfg))
+	// hostapdPipe.Write([]byte(cfg))
 
 	cmd.Start()
-	hostapdPipe.Close()
+	// hostapdPipe.Close()
 
 	for {
 		out := <-messages // Block until we receive a message on the channel
