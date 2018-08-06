@@ -49,7 +49,6 @@ func (c *Command) StartWpaSupplicant() {
 	args := []string{
 		"-Dnl80211",
 		"-iwlan0",
-		"-iwlan1",
 		"-c/etc/wpa_supplicant/wpa_supplicant.conf",
 	}
 
@@ -74,7 +73,7 @@ func (c *Command) StartDnsmasq() {
 		"--log-dhcp",
 		"--no-dhcp-interface=wlan0",
 		"--bind-interfaces",
-		"cache-size=650",
+		"--cache-size=650",
 		"--bogus-priv",
 		"--listen-address=192.168.27.1",
 	}
