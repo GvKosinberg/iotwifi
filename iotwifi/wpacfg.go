@@ -70,6 +70,8 @@ func (wpa *WpaCfg) StartAP() {
 	command.UpApInterface()
 	command.ConfigureApInterface()
 
+	time.Sleep(1 * time.Second)
+
 	cmd := exec.Command("hostapd", "-d", "/dev/stdin")
 
 	// pipes
