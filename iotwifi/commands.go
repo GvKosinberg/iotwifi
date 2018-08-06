@@ -16,32 +16,28 @@ type Command struct {
 // RemoveApInterface removes the AP interface.
 func (c *Command) RemoveApInterface() {
 	cmd := exec.Command("iw", "dev", "wlan1", "del")
-	cmd.Start()
-	cmd.Wait()
+	cmd.Run()
 	c.Log.Info("########## WLAN1 removed ############")
 }
 
 // ConfigureApInterface configured the AP interface.
 func (c *Command) ConfigureApInterface() {
 	cmd := exec.Command("ifconfig", "wlan1", c.SetupCfg.HostApdCfg.Ip)
-	cmd.Start()
-	cmd.Wait()
+	cmd.Run()
 	c.Log.Info("########## WLAN1 configured ############")
 }
 
 // UpApInterface ups the AP Interface.
 func (c *Command) UpApInterface() {
 	cmd := exec.Command("ifconfig", "wlan1", "up")
-	cmd.Start()
-	cmd.Wait()
+	cmd.Run()
 	c.Log.Info("########## WLAN1 UPed ############")
 }
 
 // AddApInterface adds the AP interface.
 func (c *Command) AddApInterface() {
 	cmd := exec.Command("iw", "phy", "phy1", "interface", "add", "wlan1", "type", "__ap")
-	cmd.Start()
-	cmd.Wait()
+	cmd.Run()
 	c.Log.Info("########## WLAN1 added ############")
 }
 
