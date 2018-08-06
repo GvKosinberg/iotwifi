@@ -72,6 +72,11 @@ func (c *Command) StartDnsmasq() {
 		"--dhcp-authoritative",
 		"--log-facility=-",
 		"--log-dhcp",
+		"--no-dhcp-interface=wlan0",
+		"--bind-interfaces",
+		"cache-size=650",
+		"--bogus-priv",
+		"--listen-address=192.168.27.1",
 	}
 
 	cmd := exec.Command("dnsmasq", args...)
