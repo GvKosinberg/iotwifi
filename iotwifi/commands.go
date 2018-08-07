@@ -15,10 +15,10 @@ type Command struct {
 
 // RemoveApInterface removes the AP interface.
 func (c *Command) SetClient() {
-	cmd := exec.Command("iw", "dev", "wlan0", "del")
-	cmd.Run()
-	cmd := exec.Command("iw", "phy", "phy0", "interface", "add", "wlan0", "type", "managed")
-	cmd.Run()
+	cmdel := exec.Command("iw", "dev", "wlan0", "del")
+	cmdel.Run()
+	cmdadd := exec.Command("iw", "phy", "phy0", "interface", "add", "wlan0", "type", "managed")
+	cmdadd.Run()
 }
 
 // RemoveApInterface removes the AP interface.
