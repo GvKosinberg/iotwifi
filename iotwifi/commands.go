@@ -60,22 +60,23 @@ func (c *Command) StartWpaSupplicant() {
 func (c *Command) StartDnsmasq() {
 	// hostapd is enabled, fire up dnsmasq
 	args := []string{
-		"--no-hosts", // Don't read the hostnames in /etc/hosts.
 		"--interface=wlan1",
-		"--keep-in-foreground",
-		"--log-queries",
-		"--no-resolv",
-		"--address=" + c.SetupCfg.DnsmasqCfg.Address,
-		"--dhcp-range=" + c.SetupCfg.DnsmasqCfg.DhcpRange,
-		"--dhcp-vendorclass=" + c.SetupCfg.DnsmasqCfg.VendorClass,
-		"--dhcp-authoritative",
-		"--log-facility=-",
-		"--log-dhcp",
-		"--no-dhcp-interface=wlan0",
-		"--bind-interfaces",
-		"--cache-size=650",
-		"--bogus-priv",
 		"--listen-address=192.168.27.1",
+		"--dhcp-range=" + c.SetupCfg.DnsmasqCfg.DhcpRange,
+		"--bind-interfaces",
+		"--bogus-priv",
+		"--log-dhcp",
+		"--keep-in-foreground",
+
+		// "--no-hosts", // Don't read the hostnames in /etc/hosts.
+		// "--log-queries",
+		// "--no-resolv",
+		// "--address=" + c.SetupCfg.DnsmasqCfg.Address,
+		// "--dhcp-vendorclass=" + c.SetupCfg.DnsmasqCfg.VendorClass,
+		// "--dhcp-authoritative",
+		// "--log-facility=-",
+		// "--no-dhcp-interface=wlan0",
+		// "--cache-size=650",
 	}
 
 	cmd := exec.Command("dnsmasq", args...)
