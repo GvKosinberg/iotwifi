@@ -14,6 +14,14 @@ type Command struct {
 }
 
 // RemoveApInterface removes the AP interface.
+func (c *Command) SetClient() {
+	cmd := exec.Command("iw", "dev", "wlan0", "del")
+	cmd.Run()
+	cmd := exec.Command("iw", "phy", "phy0", "interface", "add", "wlan0", "type", "managed")
+	cmd.Run()
+}
+
+// RemoveApInterface removes the AP interface.
 func (c *Command) RemoveApInterface() {
 	cmd := exec.Command("iw", "dev", "wlan1", "del")
 	cmd.Run()
@@ -67,16 +75,15 @@ func (c *Command) StartDnsmasq() {
 		"--bogus-priv",
 		"--log-dhcp",
 		"--keep-in-foreground",
-
-		// "--no-hosts", // Don't read the hostnames in /etc/hosts.
-		// "--log-queries",
-		// "--no-resolv",
-		// "--address=" + c.SetupCfg.DnsmasqCfg.Address,
-		// "--dhcp-vendorclass=" + c.SetupCfg.DnsmasqCfg.VendorClass,
-		// "--dhcp-authoritative",
-		// "--log-facility=-",
-		// "--no-dhcp-interface=wlan0",
-		// "--cache-size=650",
+		"--no-hosts", // Don't read the hostnames in /etc/hosts.
+		"--log-queries",
+		"--no-resolv",
+		"--address=" + c.SetupCfg.DnsmasqCfg.Address,
+		"--dhcp-vendorclass=" + c.SetupCfg.DnsmasqCfg.VendorClass,
+		"--dhcp-authoritative",
+		"--log-facility=-",
+		"--no-dhcp-interface=wlan0",
+		"--cache-size=650",
 	}
 
 	cmd := exec.Command("dnsmasq", args...)

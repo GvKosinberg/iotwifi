@@ -65,6 +65,7 @@ func (wpa *WpaCfg) StartAP() {
 		SetupCfg: wpa.WpaCfg,
 	}
 
+	command.SetClient()
 	command.RemoveApInterface()
 	command.AddApInterface()
 	command.UpApInterface()
