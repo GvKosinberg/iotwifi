@@ -17,7 +17,7 @@ type Command struct {
 func (c *Command) SetClient() {
 	cmdel := exec.Command("iw", "dev", "wlan0", "del")
 	cmdel.Run()
-	cmdadd := exec.Command("iw", "phy", "phy0", "interface", "add", "wlan0", "type", "managed")
+	cmdadd := exec.Command("iw", "phy", "phy1", "interface", "add", "wlan0", "type", "managed")
 	cmdadd.Run()
 }
 
@@ -41,7 +41,7 @@ func (c *Command) UpApInterface() {
 
 // AddApInterface adds the AP interface.
 func (c *Command) AddApInterface() {
-	cmd := exec.Command("iw", "phy", "phy1", "interface", "add", "wlan1", "type", "__ap")
+	cmd := exec.Command("iw", "phy", "phy0", "interface", "add", "wlan1", "type", "__ap")
 	cmd.Run()
 }
 
